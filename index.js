@@ -6,10 +6,11 @@ const inquirer = require('inquirer');
 const generateMark = require('./utils/generateMarkdown');
 
 
-
 // Prompt questions using inquirer
-const questions = () => {
-  return inquirer.prompt([
+const questions = []
+
+inquirer
+.prompt([
   {
       type: 'input',
       name: 'title',
@@ -18,42 +19,40 @@ const questions = () => {
           if (dataEntered) {
               return true;
           } else {
-              console.log('Please enter the title for your project!!');
+              console.log('Please enter the title for your project!');
               return false; 
           }
       }
   },
   {
-      type: 'input',
-      name: 'description',
-      message: 'Provide a short description explaining your project.',
-      validate: dataEntered => {
-          if (dataEntered) {
-              return true;
-          } else {
-              console.log('Please enter a description!!');
-              return false; 
-          }
-      }
-  }, 
+    type: 'input',
+    name: 'description',
+    message: 'Provide a short description explaining your project.',
+    validate: dataEntered => {
+        if (dataEntered) {
+            return true;
+        } else {
+            console.log('Please enter a description!!');
+            return false; 
+        }
+    }
+  },
   {
-      type: 'list',
-      name: 'license',
-      message: 'What kind of license should your project have?',
-      choices: ['MIT', 'GNU'],
-      default: ["MIT"],
-      validate: dataEntered => {
-          if (dataEntered) {
-              return true;
-          } else {
-              console.log('Please choose a license!');
-              return false; 
-          }
-      }
+    type: 'input',
+    name: 'usage',
+    message: 'Provide instructions and examples for how to use this app?',
+    validate: dataEntered => {
+        if (dataEntered) {
+            return true;
+        } else {
+            console.log('Please provide instructions on how to use this app!');
+            return false; 
+        }
+    }
   },
   {
       type: 'input',
-      name: 'install',
+      name: 'installation',
       message: 'What are the steps required to install your project?',
       validate: dataEntered => {
           if (dataEntered) {
@@ -66,36 +65,46 @@ const questions = () => {
   },
   {
       type: 'input',
-      name: 'usage',
-      message: 'How do you use this app?',
+      name: 'credits', 
+      message: 'List your collaborators, if any.',
       validate: dataEntered => {
-          if (dataEntered) {
-              return true;
-          } else {
-              console.log('Please enter a usage description!');
-              return false; 
-          }
-      }
+        if (dataEntered) {
+            return true;
+        } else {
+            console.log('Please provide collaborators, if none, please type N/S');
+            return false; 
+        }
+    }
   },
   {
       type: 'input',
-      name: 'test', 
-      message: 'What command should be run to run tests?',
-      default: 'npm test'
+      name: 'contributions',
+      message: 'How can a user contribute to this project?',
+      validate: dataEntered => {
+        if (dataEntered) {
+            return true;
+        } else {
+            console.log('Please provide instructions for future contributors!');
+            return false; 
+        }
+    }
   },
   {
-      type: 'input',
-      name: 'contributors',
-      message: 'What does the user need to know about contributing to the repo?'
-  }
-]);
-};
-
-
-// Function to log errors or log final file
-const writeFile = data => {
-  fs.writeFile('README.md', data, err => {
-      // Log if err
+    type: 'input',
+    name: 'name', 
+    message: 'What is your name?',
+  },
+  {
+    type: 'input',
+    name: 'username', 
+    message: 'What is your GitHub username?',
+  },
+])
+.then((answers) => {
+  const generatePage = generateMarkDown(answers);
+}) 
+fs.writeFile('README.md', data, err => {
+      // Log if error
       if (err) {
           console.log(err);
           return;
@@ -103,28 +112,4 @@ const writeFile = data => {
       } else {
           console.log("Success!! Your README file has been created!")
       }
-  })
-}; 
-
-
-
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
-
-// TODO: Create a function to initialize app
-function init() {}
-
-// Function call to initialize app
-init()
-// getting user answers 
-.then(userAnswers => {
-  return generatePage(userAnswers);
-})
-// using data to display on page 
-.then(data => {
-  return writeFile(data);
-})
-// catching errors 
-.catch(err => {
-  console.log(err)
-}) 
+  });
