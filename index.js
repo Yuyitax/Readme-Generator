@@ -23,11 +23,6 @@ const questions =
     message: 'Provide a short description explaining your project.',
   },
   {
-    type: 'input',
-    name: 'usage',
-    message: 'Provide instructions and examples for how to use this app?',
-  },
-  {
       type: 'input',
       name: 'installation',
       message: 'What are the steps required to install your project?',
@@ -50,7 +45,7 @@ const questions =
   {
     type: 'input',
     name: 'username', 
-    message: 'What is your GitHub username?',
+    message: 'What is your GitHub profile link?',
   },
 ]
 
