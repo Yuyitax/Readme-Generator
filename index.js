@@ -66,37 +66,3 @@ function init() {
 // Function call to initialize app
 init();
 
-
-
-
-// function init() {
-//   questions ()
-//   .then((answers) => writeFile('README.md', generateMarkdown(answers) =>
-//   err ? console.log("Unable to generate REAME.md file") : console.log('Success!! Your README file has been created!')
-//   });
-
-// init();
-
-
-
-// function writeToFile(fileName, data) {
-//   fs.writeFile(fileName, data, (err) => err ? console.log("Unable to generate REAME.md file") : console.log(`Created file ${fileName}`));
-// }
-
-// function init() {
-//   fileName = 'README.md'
-//   .then(input => generateMarkdown(input))
-//   .then(data => writeToFile(fileName, data))    
-// }
-
-// function writeToFile(fileName, data) {
-//   fs.writeFile(fileName, data, (err) => err ? console.log("Error writing to file") : console.log(`Created file ${fileName}`));
-// }
-
-// function init() {
-//   fileName = 'README.md'
-//   inquirer.prompt(questions).then(answers => generateMarkdown(answers)).then(data => writeToFile(fileName, data))    
-// }
-
-// // Function call to initialize app
-// init();
