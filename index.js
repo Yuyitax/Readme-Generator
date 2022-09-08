@@ -1,19 +1,112 @@
-// TODO: Include packages needed for this application
+// Packages needed for this application
+const fs = require('fs');
+const inquirer = require('inquirer'); 
+
+// Link to the generate page
 const generateMark = require('./utils/generateMarkdown');
 
-console.log(generateMark({title: 'Hola'}));
 
 
-const fs = require('fs');
-fs.writeFile('README.md', process.argv[2], (err) =>
-  err ? console.error(err) : console.log('Success!')
-);
+// Prompt questions using inquirer
+const questions = () => {
+  return inquirer.prompt([
+  {
+      type: 'input',
+      name: 'title',
+      message: 'What is the title for your project?',
+      validate: dataEntered => {
+          if (dataEntered) {
+              return true;
+          } else {
+              console.log('Please enter the title for your project!!');
+              return false; 
+          }
+      }
+  },
+  {
+      type: 'input',
+      name: 'description',
+      message: 'Provide a short description explaining your project.',
+      validate: dataEntered => {
+          if (dataEntered) {
+              return true;
+          } else {
+              console.log('Please enter a description!!');
+              return false; 
+          }
+      }
+  }, 
+  {
+      type: 'list',
+      name: 'license',
+      message: 'What kind of license should your project have?',
+      choices: ['MIT', 'GNU'],
+      default: ["MIT"],
+      validate: dataEntered => {
+          if (dataEntered) {
+              return true;
+          } else {
+              console.log('Please choose a license!');
+              return false; 
+          }
+      }
+  },
+  {
+      type: 'input',
+      name: 'install',
+      message: 'What are the steps required to install your project?',
+      validate: dataEntered => {
+          if (dataEntered) {
+              return true;
+          } else {
+              console.log('Please enter steps required to install your project!');
+              return false; 
+          }
+      }
+  },
+  {
+      type: 'input',
+      name: 'usage',
+      message: 'How do you use this app?',
+      validate: dataEntered => {
+          if (dataEntered) {
+              return true;
+          } else {
+              console.log('Please enter a usage description!');
+              return false; 
+          }
+      }
+  },
+  {
+      type: 'input',
+      name: 'test', 
+      message: 'What command should be run to run tests?',
+      default: 'npm test'
+  },
+  {
+      type: 'input',
+      name: 'contributors',
+      message: 'What does the user need to know about contributing to the repo?'
+  }
+]);
+};
 
 
+// Function to log errors or log final file
+const writeFile = data => {
+  fs.writeFile('README.md', data, err => {
+      // Log if err
+      if (err) {
+          console.log(err);
+          return;
+      // Message if file was created successfully
+      } else {
+          console.log("Success!! Your README file has been created!")
+      }
+  })
+}; 
 
 
-// TODO: Create an array of questions for user input
-const questions = [];
 
 // TODO: Create a function to write README file
 function writeToFile(fileName, data) {}
@@ -22,75 +115,16 @@ function writeToFile(fileName, data) {}
 function init() {}
 
 // Function call to initialize app
-init();
-
-
-
-
-// const inquirer = require('inquirer');
-// const fs = require('fs');
-
-// const generateHTML = ({ name, location, github, linkedin }) =>
-//   `<!DOCTYPE html>
-// <html lang="en">
-// <head>
-//   <meta charset="UTF-8">
-//   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-//   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-//   <title>Document</title>
-// </head>
-// <body>
-//   <div class="jumbotron jumbotron-fluid">
-//   <div class="container">
-//     <h1 class="display-4">Hi! My name is ${name}</h1>
-//     <p class="lead">I am from ${location}.</p>
-//     <h3>Example heading <span class="badge badge-secondary">Contact Me</span></h3>
-//     <ul class="list-group">
-//       <li class="list-group-item">My GitHub username is ${github}</li>
-//       <li class="list-group-item">LinkedIn: ${linkedin}</li>
-//     </ul>
-//   </div>
-// </div>
-// </body>
-// </html>`;
-
-// inquirer
-//   .prompt([
-//     {
-//       type: 'input',
-//       name: 'name',
-//       message: 'What is your name?',
-//     },
-//     {
-//       type: 'input',
-//       name: 'location',
-//       message: 'Where are you from?',
-//     },
-//     {
-//       type: 'input',
-//       name: 'hobby',
-//       message: 'What is your favorite hobby?',
-//     },
-//     {
-//       type: 'input',
-//       name: 'food',
-//       message: 'What is your favorite food?',
-//     },
-//     {
-//       type: 'input',
-//       name: 'github',
-//       message: 'Enter your GitHub Username',
-//     },
-//     {
-//       type: 'input',
-//       name: 'linkedin',
-//       message: 'Enter your LinkedIn URL.',
-//     },
-//   ])
-//   .then((answers) => {
-//     const htmlPageContent = generateHTML(answers);
-
-//     fs.writeFile('index.html', htmlPageContent, (err) =>
-//       err ? console.log(err) : console.log('Successfully created index.html!')
-//     );
-//   });
+init()
+// getting user answers 
+.then(userAnswers => {
+  return generatePage(userAnswers);
+})
+// using data to display on page 
+.then(data => {
+  return writeFile(data);
+})
+// catching errors 
+.catch(err => {
+  console.log(err)
+}) 
