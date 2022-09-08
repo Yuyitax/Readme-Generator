@@ -3,91 +3,44 @@ const fs = require('fs');
 const inquirer = require('inquirer'); 
 
 // Link to the generate page
-const generateMark = require('./utils/generateMarkdown');
+const generateMarkdown = require('./utils/generateMarkdown');
+
 
 
 // Prompt questions using inquirer
-const questions = []
+// const generateReadMe = ({ title, usage, gredits, contributions, rights, name, username }) =>
 
-inquirer
-.prompt([
+const questions = 
+[
   {
       type: 'input',
       name: 'title',
       message: 'What is the title for your project?',
-      validate: dataEntered => {
-          if (dataEntered) {
-              return true;
-          } else {
-              console.log('Please enter the title for your project!');
-              return false; 
-          }
-      }
   },
   {
     type: 'input',
     name: 'description',
     message: 'Provide a short description explaining your project.',
-    validate: dataEntered => {
-        if (dataEntered) {
-            return true;
-        } else {
-            console.log('Please enter a description!!');
-            return false; 
-        }
-    }
   },
   {
     type: 'input',
     name: 'usage',
     message: 'Provide instructions and examples for how to use this app?',
-    validate: dataEntered => {
-        if (dataEntered) {
-            return true;
-        } else {
-            console.log('Please provide instructions on how to use this app!');
-            return false; 
-        }
-    }
   },
   {
       type: 'input',
       name: 'installation',
       message: 'What are the steps required to install your project?',
-      validate: dataEntered => {
-          if (dataEntered) {
-              return true;
-          } else {
-              console.log('Please enter steps required to install your project!');
-              return false; 
-          }
-      }
   },
   {
       type: 'input',
       name: 'credits', 
       message: 'List your collaborators, if any.',
-      validate: dataEntered => {
-        if (dataEntered) {
-            return true;
-        } else {
-            console.log('Please provide collaborators, if none, please type N/S');
-            return false; 
-        }
-    }
   },
   {
       type: 'input',
       name: 'contributions',
       message: 'How can a user contribute to this project?',
-      validate: dataEntered => {
-        if (dataEntered) {
-            return true;
-        } else {
-            console.log('Please provide instructions for future contributors!');
-            return false; 
-        }
-    }
   },
   {
     type: 'input',
@@ -99,17 +52,51 @@ inquirer
     name: 'username', 
     message: 'What is your GitHub username?',
   },
-])
-.then((answers) => {
-  const generatePage = generateMarkDown(answers);
-}) 
-fs.writeFile('README.md', data, err => {
-      // Log if error
-      if (err) {
-          console.log(err);
-          return;
-      // Message if file was created successfully
-      } else {
-          console.log("Success!! Your README file has been created!")
-      }
-  });
+]
+
+function writeToFile(fileName, data) {
+  fs.writeFile(fileName, data, (err) => err ? console.log("Unable to generate REAME.md file") : console.log(`Success!! Your README file has been created!`));
+}
+
+function init() {
+  fileName = 'README.md'
+  inquirer.prompt(questions).then(answers => generateMarkdown(answers)).then(data => writeToFile(fileName, data))    
+}
+
+// Function call to initialize app
+init();
+
+
+
+
+// function init() {
+//   questions ()
+//   .then((answers) => writeFile('README.md', generateMarkdown(answers) =>
+//   err ? console.log("Unable to generate REAME.md file") : console.log('Success!! Your README file has been created!')
+//   });
+
+// init();
+
+
+
+// function writeToFile(fileName, data) {
+//   fs.writeFile(fileName, data, (err) => err ? console.log("Unable to generate REAME.md file") : console.log(`Created file ${fileName}`));
+// }
+
+// function init() {
+//   fileName = 'README.md'
+//   .then(input => generateMarkdown(input))
+//   .then(data => writeToFile(fileName, data))    
+// }
+
+// function writeToFile(fileName, data) {
+//   fs.writeFile(fileName, data, (err) => err ? console.log("Error writing to file") : console.log(`Created file ${fileName}`));
+// }
+
+// function init() {
+//   fileName = 'README.md'
+//   inquirer.prompt(questions).then(answers => generateMarkdown(answers)).then(data => writeToFile(fileName, data))    
+// }
+
+// // Function call to initialize app
+// init();
